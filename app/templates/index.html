@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web3 On-Chain & Gas Forensics | Sepolia, Monad, 0G, Celo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            crypto: {
+              sepolia: '#627eea',
+              monad: '#836ef9',
+              zerog: '#00ff88',
+              celo: '#35d07f',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { background-color: #07090e; color: #f1f5f9; }
+    .glass { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+    .glow-cyan { box-shadow: 0 0 20px rgba(6, 182, 212, 0.15); }
+  </style>
+</head>
+<body class="min-h-screen font-sans antialiased">
+
+  <!-- Header -->
+  <header class="border-b border-slate-800/80 bg-slate-950/80 sticky top-0 z-50 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-cyan-500 via-indigo-500 to-purple-500 p-[2px] flex items-center justify-center">
+          <div class="h-full w-full bg-slate-950 rounded-[10px] flex items-center justify-center text-lg font-bold text-white">⛓️</div>
+        </div>
+        <div>
+          <h1 class="text-base font-bold text-white tracking-tight flex items-center gap-2">
+            Web3 On-Chain & Gas Forensics
+            <span class="text-[10px] font-semibold bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-2 py-0.5 rounded-full">MULTI-CHAIN</span>
+          </h1>
+          <p class="text-xs text-slate-400">Sepolia &middot; Monad Testnet &middot; 0G Galileo &middot; Celo</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="text-xs font-mono text-slate-400 bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-lg flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+          DuckDB: 25.000 Txs On-Chain
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+    <!-- Chain Telemetry Cards -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {% for ch in chains %}
+      <div class="glass p-5 rounded-2xl border border-slate-800 hover:border-slate-700 transition-all relative overflow-hidden">
+        <div class="flex items-center justify-between">
+          <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">{{ ch.chain }}</div>
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300">{{ ch.tx_count }} txs</span>
+        </div>
+        <div class="text-2xl font-bold text-white mt-2">{{ ch.avg_base_fee }} <span class="text-xs font-mono text-slate-400">Gwei Base</span></div>
+        
+        <div class="mt-4 pt-3 border-t border-slate-800/80 space-y-1 text-xs font-mono">
+          <div class="flex justify-between text-slate-400">
+            <span>Gas Médio:</span>
+            <span class="text-slate-200">{{ "{:,.0f}".format(ch.avg_gas) }}</span>
+          </div>
+          <div class="flex justify-between text-slate-400">
+            <span>Padrão Sybil:</span>
+            <span class="{% if ch.sybil_pct > 10 %}text-amber-400{% else %}text-emerald-400{% endif %} font-bold">{{ ch.sybil_pct }}%</span>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </section>
+
+    <!-- Wallet Forensics Search & Audit Tool -->
+    <section class="glass p-6 rounded-2xl border border-cyan-500/30 glow-cyan">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+        <div>
+          <h2 class="text-lg font-bold text-white flex items-center gap-2">
+            <span>🕵️</span> Auditor Forense de Carteiras & Detecção Sybil
+          </h2>
+          <p class="text-xs text-slate-400">Pesquise qualquer endereço EVM para escanear conexões no grafo e calcular o escore de risco de automação.</p>
+        </div>
+      </div>
+
+      <div class="flex gap-2">
+        <input type="text" id="wallet-input" placeholder="Ex.: 0xCD42b109e44E7E651030eBf5407d57D286688c5D" value="0xCD42b109e44E7E651030eBf5407d57D286688c5D" class="flex-1 bg-slate-900 border border-slate-700 text-slate-100 font-mono text-xs rounded-xl px-4 py-3 focus:border-cyan-500 focus:outline-none">
+        <button id="btn-audit" class="bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold px-6 py-3 rounded-xl text-xs transition-all shadow-lg shadow-cyan-500/20 flex items-center gap-2">
+          🔍 Auditar Carteira
+        </button>
+      </div>
+
+      <!-- Audit Result Output -->
+      <div id="audit-result" class="mt-4 p-4 rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-mono space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="text-slate-400">Status Forense: <strong class="text-emerald-400">Safe / Fresh Wallet</strong></span>
+          <span class="bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded">Risco Sybil: 12/100 (Baixo)</span>
+        </div>
+        <p class="text-slate-300">Nenhum padrão de airdrop farming automatizado, transações circulares ou saturação de gás suspeita detectada neste endereço.</p>
+      </div>
+    </section>
+
+    <!-- Visual Charts: Gas Dynamics & Types -->
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div class="glass p-5 rounded-2xl border border-slate-800">
+        <h3 class="text-sm font-bold text-slate-200 mb-1">Saturação de Gás por Bloco (EIP-1559)</h3>
+        <p class="text-xs text-slate-400 mb-4">% do limite de gás preenchido ao longo dos últimos blocos.</p>
+        <div class="h-64">
+          <canvas id="chart-gas-saturation"></canvas>
+        </div>
+      </div>
+
+      <div class="glass p-5 rounded-2xl border border-slate-800">
+        <h3 class="text-sm font-bold text-slate-200 mb-1">Distribuição de Tipos de Transação</h3>
+        <p class="text-xs text-slate-400 mb-4">Volume e consumo médio de gás por categoria de operação.</p>
+        <div class="h-64">
+          <canvas id="chart-tx-types"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- NetworkX Top Hubs & Sybil Rings Table -->
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <!-- Top Centrality Hubs -->
+      <div class="glass p-5 rounded-2xl border border-slate-800">
+        <h3 class="text-sm font-bold text-white mb-1 flex items-center gap-2">
+          <span>🕸️</span> Top Hubs do Grafo On-Chain (NetworkX PageRank)
+        </h3>
+        <p class="text-xs text-slate-400 mb-4">Contratos e roteadores de maior centralidade no fluxo de liquidez.</p>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs font-mono">
+            <thead>
+              <tr class="text-slate-400 border-b border-slate-800">
+                <th class="pb-2">Rótulo / Protocolo</th>
+                <th class="pb-2">Tipo</th>
+                <th class="pb-2 text-right">PageRank</th>
+                <th class="pb-2 text-right">Conexões</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800/60">
+              {% for h in metrics.graph.top_hubs[:6] %}
+              <tr>
+                <td class="py-2 text-slate-200 font-bold">{{ h.label }}</td>
+                <td class="py-2 text-slate-400">{{ h.category }}</td>
+                <td class="py-2 text-right text-cyan-400">{{ h.pagerank_score }}</td>
+                <td class="py-2 text-right text-slate-300">{{ h.in_degree }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Flagged Sybil Rings -->
+      <div class="glass p-5 rounded-2xl border border-slate-800">
+        <h3 class="text-sm font-bold text-white mb-1 flex items-center gap-2">
+          <span>🚨</span> Clusters Sybil Sinalizados (Airdrop Farming)
+        </h3>
+        <p class="text-xs text-slate-400 mb-4">Carteiras detectadas com comportamento coordenado e repetitivo.</p>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs font-mono">
+            <thead>
+              <tr class="text-slate-400 border-b border-slate-800">
+                <th class="pb-2">Endereço da Carteira</th>
+                <th class="pb-2">Txs</th>
+                <th class="pb-2 text-right">Gas Médio</th>
+                <th class="pb-2 text-right">Classificação</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800/60">
+              {% for s in metrics.sybil_detection.top_flagged_wallets[:6] %}
+              <tr>
+                <td class="py-2 text-amber-300" title="{{ s.wallet }}">{{ s.wallet[:10] }}...{{ s.wallet[-4:] }}</td>
+                <td class="py-2 text-slate-300">{{ s.tx_count }}</td>
+                <td class="py-2 text-right text-slate-400">{{ "{:,.0f}".format(s.avg_gas) }}</td>
+                <td class="py-2 text-right text-red-400 font-bold">ALERTA SYBIL</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-slate-800/80 bg-slate-950 py-6 mt-12 text-center text-xs text-slate-500 font-mono">
+    Web3 On-Chain & Gas Forensics &middot; Desenvolvido por Tássio Sales &middot; Python &middot; DuckDB &middot; NetworkX &middot; FastAPI
+  </footer>
+
+  <script>
+    async function loadTelemetry() {
+      const res = await fetch('/api/telemetry');
+      const data = await res.json();
+
+      // Chart 1: Gas Saturation
+      const satLabels = data.blocks.slice(0, 40).map(b => '#' + (b.block_number % 10000));
+      const satVals = data.blocks.slice(0, 40).map(b => b.gas_saturation_pct);
+      new Chart(document.getElementById('chart-gas-saturation'), {
+        type: 'line',
+        data: {
+          labels: satLabels,
+          datasets: [{
+            label: 'Saturação (%)',
+            data: satVals,
+            borderColor: '#06b6d4',
+            backgroundColor: 'rgba(6, 182, 212, 0.1)',
+            fill: true,
+            tension: 0.3,
+            pointRadius: 3,
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { ticks: { color: '#94a3b8', font: { size: 9 } }, grid: { display: false } },
+            y: { ticks: { color: '#94a3b8', font: { size: 9 }, callback: v => v + '%' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+          }
+        }
+      });
+
+      // Chart 2: Tx Types
+      const typeLabels = data.tx_types.map(t => t.tx_type);
+      const typeVals = data.tx_types.map(t => t.count);
+      new Chart(document.getElementById('chart-tx-types'), {
+        type: 'doughnut',
+        data: {
+          labels: typeLabels,
+          datasets: [{
+            data: typeVals,
+            backgroundColor: ['#6366f1', '#06b6d4', '#10b981', '#f59e0b', '#ec4899', '#8b5cf6'],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'right', labels: { color: '#cbd5e1', font: { size: 10 } } }
+          }
+        }
+      });
+    }
+
+    document.getElementById('btn-audit').addEventListener('click', async () => {
+      const addr = document.getElementById('wallet-input').value.trim();
+      if (!addr) return;
+      const res = await fetch('/api/wallet_audit?address=' + encodeURIComponent(addr));
+      const d = await res.json();
+      const out = document.getElementById('audit-result');
+      out.innerHTML = `
+        <div class="flex items-center justify-between">
+          <span class="text-slate-400">Status Forense: <strong class="${d.risk_score > 50 ? 'text-red-400' : 'text-emerald-400'}">${d.status}</strong></span>
+          <span class="${d.risk_score > 50 ? 'bg-red-500/20 text-red-300' : 'bg-emerald-500/20 text-emerald-300'} px-2 py-0.5 rounded">Risco: ${d.risk_score}/100</span>
+        </div>
+        <p class="text-slate-300">Categoria: <strong>${d.category}</strong>. ${d.analysis || ''}</p>
+      `;
+    });
+
+    window.addEventListener('DOMContentLoaded', loadTelemetry);
+  </script>
+</body>
+</html>

@@ -1,0 +1,224 @@
+{
+  "graph": {
+    "total_nodes": 927,
+    "total_edges": 16987,
+    "top_hubs": [
+      {
+        "address": "0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F",
+        "label": "SushiSwap Router",
+        "category": "DEX",
+        "pagerank_score": 4.8694,
+        "in_degree": 804,
+        "out_degree": 0
+      },
+      {
+        "address": "0x1111111254fb6c44bac0bed2854e76f90643097d",
+        "label": "1inch Aggregator",
+        "category": "DEX",
+        "pagerank_score": 4.8104,
+        "in_degree": 823,
+        "out_degree": 0
+      },
+      {
+        "address": "0xE592427A0AEce92De3Edee1F18E0157C05861564",
+        "label": "Uniswap V3 Router",
+        "category": "DEX",
+        "pagerank_score": 4.7779,
+        "in_degree": 803,
+        "out_degree": 0
+      },
+      {
+        "address": "0x401F6c983eA34274ec46f84D70b31C151321188b",
+        "label": "Polygon/Sepolia Bridge Gateway",
+        "category": "Bridge",
+        "pagerank_score": 4.5181,
+        "in_degree": 816,
+        "out_degree": 0
+      },
+      {
+        "address": "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
+        "label": "Uniswap V2 Router",
+        "category": "DEX",
+        "pagerank_score": 4.4838,
+        "in_degree": 786,
+        "out_degree": 0
+      },
+      {
+        "address": "0x0000000000000000000000000000000000001010",
+        "label": "ZeroG Staking Validator Hub",
+        "category": "Staking",
+        "pagerank_score": 4.4697,
+        "in_degree": 799,
+        "out_degree": 0
+      },
+      {
+        "address": "0x88F062c3f8510aB7243cE016a2A47883a2Cd4201",
+        "label": "Wallet Hub Desconhecido",
+        "category": "Wallet / Contrato",
+        "pagerank_score": 1.3504,
+        "in_degree": 120,
+        "out_degree": 0
+      },
+      {
+        "address": "0x5fe06bd9e1cE17f2641f24aE83637ab66a2cca9C",
+        "label": "Wallet Hub Desconhecido",
+        "category": "Wallet / Contrato",
+        "pagerank_score": 0.1319,
+        "in_degree": 19,
+        "out_degree": 15
+      },
+      {
+        "address": "0x462eabd9e1cE17f2641f24aE83637ab66a2cca9C",
+        "label": "Wallet Hub Desconhecido",
+        "category": "Wallet / Contrato",
+        "pagerank_score": 0.129,
+        "in_degree": 23,
+        "out_degree": 21
+      },
+      {
+        "address": "0x1c63a1d9e1cE17f2641f24aE83637ab66a2cca9C",
+        "label": "Wallet Hub Desconhecido",
+        "category": "Wallet / Contrato",
+        "pagerank_score": 0.1268,
+        "in_degree": 24,
+        "out_degree": 27
+      }
+    ]
+  },
+  "sybil_detection": {
+    "identified_farming_rings": 120,
+    "top_flagged_wallets": [
+      {
+        "wallet": "0x0049a1b2c3d4e5f67890123456789abcdef0049",
+        "tx_count": 40,
+        "avg_gas": 33101.0,
+        "avg_value": 0.002502,
+        "threat_score": "CRITICAL (Airdrop Ring Sybil)"
+      },
+      {
+        "wallet": "0x001fa1b2c3d4e5f67890123456789abcdef001f",
+        "tx_count": 38,
+        "avg_gas": 32423.0,
+        "avg_value": 0.002494,
+        "threat_score": "CRITICAL (Airdrop Ring Sybil)"
+      },
+      {
+        "wallet": "0x0060a1b2c3d4e5f67890123456789abcdef0060",
+        "tx_count": 37,
+        "avg_gas": 33805.0,
+        "avg_value": 0.002605,
+        "threat_score": "CRITICAL (Airdrop Ring Sybil)"
+      },
+      {
+        "wallet": "0x0068a1b2c3d4e5f67890123456789abcdef0068",
+        "tx_count": 36,
+        "avg_gas": 32231.0,
+        "avg_value": 0.002241,
+        "threat_score": "CRITICAL (Airdrop Ring Sybil)"
+      },
+      {
+        "wallet": "0x001aa1b2c3d4e5f67890123456789abcdef001a",
+        "tx_count": 36,
+        "avg_gas": 31708.0,
+        "avg_value": 0.002438,
+        "threat_score": "CRITICAL (Airdrop Ring Sybil)"
+      },
+      {
+        "wallet": "0x0012a1b2c3d4e5f67890123456789abcdef0012",
+        "tx_count": 35,
+        "avg_gas": 32467.0,
+        "avg_value": 0.002538,
+        "threat_score": "CRITICAL (Airdrop Ring Sybil)"
+      },
+      {
+        "wallet": "0x0002a1b2c3d4e5f67890123456789abcdef0002",
+        "tx_count": 35,
+        "avg_gas": 32003.0,
+        "avg_value": 0.002274,
+        "threat_score": "CRITICAL (Airdrop Ring Sybil)"
+      },
+      {
+        "wallet": "0x000aa1b2c3d4e5f67890123456789abcdef000a",
+        "tx_count": 34,
+        "avg_gas": 32699.0,
+        "avg_value": 0.002693,
+        "threat_score": "CRITICAL (Airdrop Ring Sybil)"
+      },
+      {
+        "wallet": "0x002ea1b2c3d4e5f67890123456789abcdef002e",
+        "tx_count": 33,
+        "avg_gas": 35225.0,
+        "avg_value": 0.002494,
+        "threat_score": "CRITICAL (Airdrop Ring Sybil)"
+      },
+      {
+        "wallet": "0x0045a1b2c3d4e5f67890123456789abcdef0045",
+        "tx_count": 33,
+        "avg_gas": 31513.0,
+        "avg_value": 0.002245,
+        "threat_score": "CRITICAL (Airdrop Ring Sybil)"
+      },
+      {
+        "wallet": "0x0062a1b2c3d4e5f67890123456789abcdef0062",
+        "tx_count": 32,
+        "avg_gas": 32199.0,
+        "avg_value": 0.002471,
+        "threat_score": "CRITICAL (Airdrop Ring Sybil)"
+      },
+      {
+        "wallet": "0x0024a1b2c3d4e5f67890123456789abcdef0024",
+        "tx_count": 32,
+        "avg_gas": 32224.0,
+        "avg_value": 0.002957,
+        "threat_score": "CRITICAL (Airdrop Ring Sybil)"
+      },
+      {
+        "wallet": "0x006ba1b2c3d4e5f67890123456789abcdef006b",
+        "tx_count": 32,
+        "avg_gas": 32032.0,
+        "avg_value": 0.002497,
+        "threat_score": "CRITICAL (Airdrop Ring Sybil)"
+      },
+      {
+        "wallet": "0x0066a1b2c3d4e5f67890123456789abcdef0066",
+        "tx_count": 31,
+        "avg_gas": 34495.0,
+        "avg_value": 0.002579,
+        "threat_score": "CRITICAL (Airdrop Ring Sybil)"
+      },
+      {
+        "wallet": "0x0000a1b2c3d4e5f67890123456789abcdef0000",
+        "tx_count": 31,
+        "avg_gas": 34951.0,
+        "avg_value": 0.002736,
+        "threat_score": "CRITICAL (Airdrop Ring Sybil)"
+      }
+    ]
+  },
+  "gas_anomalies": [
+    {
+      "chain": "Monad Testnet",
+      "total_anomalies": 1953,
+      "avg_anomaly_gas": 204538.0,
+      "avg_anomaly_val": 0.2432
+    },
+    {
+      "chain": "Ethereum Sepolia",
+      "total_anomalies": 1941,
+      "avg_anomaly_gas": 201751.0,
+      "avg_anomaly_val": 0.2449
+    },
+    {
+      "chain": "0G Galileo",
+      "total_anomalies": 1928,
+      "avg_anomaly_gas": 201123.0,
+      "avg_anomaly_val": 0.2551
+    },
+    {
+      "chain": "Celo Mainnet",
+      "total_anomalies": 1912,
+      "avg_anomaly_gas": 209104.0,
+      "avg_anomaly_val": 0.2477
+    }
+  ]
+}
